@@ -12,13 +12,13 @@ public class DatabaseHandler extends Configs {
 
     public Connection getDbConnection()
             throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://" + dbHost + ":"
-                + dbPort + "/" + dbName+"?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
+//        String connectionString = "jdbc:mysql://" + dbHost + ":"
+//                + dbPort + "/" + dbName+"?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
 
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
+//        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
 
         return dbConnection;
     }
