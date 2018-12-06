@@ -12,13 +12,10 @@ public class DatabaseHandler extends Configs {
 
     public Connection getDbConnection()
             throws ClassNotFoundException, SQLException {
-//        String connectionString = "jdbc:mysql://" + dbHost + ":"
-//                + dbPort + "/" + dbName+"?useLegacyDatetimeCode=false&serverTimezone=America/New_York";
+        String connctionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName + "?" + "autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        Class.forName("com.mysql.jdbc.Driver");
 
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-//        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
+        dbConnection = DriverManager.getConnection(connctionString, dbUser, dbPass);
 
         return dbConnection;
     }
@@ -33,35 +30,40 @@ public class DatabaseHandler extends Configs {
                 "VALUES(?,?,?,?,?)";
 
         try {
-        PreparedStatement prSt = getDbConnection().prepareStatement(insert);
-        prSt.setString(1, user.getFirstName());
-        prSt.setString(2, user.getLastName());
-        prSt.setString(3, user.getUserName());
-        prSt.setString(4, user.getPassword());
-        prSt.setString(5, user.getGender());
+            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            prSt.setString(1, user.getFirstName());
+            prSt.setString(2, user.getLastName());
+            prSt.setString(3, user.getUserName());
+            prSt.setString(4, user.getPassword());
+            prSt.setString(5, user.getGender());
 
-        prSt.executeUpdate();
+            prSt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-    public ResultSet getUser(MyMessage user){
-        ResultSet resSet = null;
 
-        String select = "SELECT * FROM "+ Const.USER_TABLE+" WHERE "+Const.USERS_USERNAME+"=? AND " +Const.USERS_PASSWORD+"=?";
+    public ResultSet getUser(MyMessage user) {
+        ResultSet resSet = null;
+        System.out.println("DatabaseHandler in...");
+
+//        String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " + Const.USERS_USERNAME + "=? AND " + Const.USERS_PASSWORD + "=?";
+        String select = "SELECT * FROM users WHERE username = '2018' AND password = 'qwertyu';";
         try {
             PreparedStatement prSt = getDbConnection().prepareStatement(select);
-            prSt.setString(1, user.getUserName());
-            prSt.setString(2, user.getPassword());
+//            prSt.setString(1, user.getUserName());
+//            prSt.setString(2, user.getPassword());
 
             resSet = prSt.executeQuery();
+            System.out.println(resSet.getString(2));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("DatabaseHandler out...");
         return resSet;
     }
 }

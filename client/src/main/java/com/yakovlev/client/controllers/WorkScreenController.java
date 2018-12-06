@@ -54,9 +54,7 @@ public class WorkScreenController {
             }
         });
 
-        btnUp.setOnAction(event -> { sendMessage();  });
-
-
+        btnUp.setOnAction(event -> { });
     }
 
     private MyMessage sendCommand(String command, String path) {
@@ -93,37 +91,39 @@ public class WorkScreenController {
         return msgFromServer;
     }
 
-    private MyMessage sendMessage(){
-        ObjectEncoderOutputStream oeos = null;
-        ObjectDecoderInputStream odis = null;
-        MyMessage msgFromServer;
-        try (Socket socket = new Socket("localhost", 8180)) {
-            oeos = new ObjectEncoderOutputStream(socket.getOutputStream());
+    private MyMessage sendMessage(MyMessage msg){
 
-//            MyMessage loginMessage = new MyMessage();
+//        ObjectEncoderOutputStream oeos = null;
+//        ObjectDecoderInputStream odis = null;
+//        MyMessage msgFromServer;
+//        try (Socket socket = new Socket("localhost", 8180)) {
+//            oeos = new ObjectEncoderOutputStream(socket.getOutputStream());
+//
+//            MyMessage message = new MyMessage();
 //            loginMessage.setUserName(fieldMail.getText().trim());
 //            loginMessage.setPassword(fieldPassword.getText().trim());
-//            oeos.writeObject();
-            oeos.flush();
-            odis = new ObjectDecoderInputStream(socket.getInputStream());
-            msgFromServer = (MyMessage) odis.readObject();
-            System.out.println("Answer from server: " + msgFromServer.getList()+"//.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                oeos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                odis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+//            message.setUserName("Alexandr");
+//            oeos.writeObject(message);
+//            oeos.flush();
+//            odis = new ObjectDecoderInputStream(socket.getInputStream());
+//            msgFromServer = (MyMessage) odis.readObject();
+//            System.out.println("Answer from server: " + msgFromServer.getList()+"//.");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        } finally {
+//            try {
+//                oeos.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                odis.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
         return null;
     }
 }

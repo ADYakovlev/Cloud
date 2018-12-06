@@ -1,5 +1,8 @@
 package com.yakovlev.common;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,11 +12,26 @@ import java.util.List;
 public class MyMessage implements Serializable {
     private static final long serialVersionUID = 5193392663743561680L;
 
+    @Getter
+    @Setter
+    private String typeOf;
+    @Getter
+    @Setter
     private String firstName;
+    @Getter
+    @Setter
     private String lastName;
+    @Getter
+    @Setter
     private String userName;
+    @Getter
+    @Setter
     private String password;
+    @Getter
+    @Setter
     private String gender;
+    @Getter
+    @Setter
     private List list;
 
     public MyMessage(String firstName, String lastName, String userName, String password, String gender) {
@@ -24,49 +42,7 @@ public class MyMessage implements Serializable {
         this.gender = gender;
     }
 
-    public MyMessage() {}
-
-    public String getFirstName() {
-        return firstName;
+    public MyMessage() {
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public List getList() { return list; }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setList(List list) { this.list = list; }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yakovlev.client.controllers.TestScreenController">
+   <children>
+      <Button fx:id="btnAuth" layoutX="120.0" layoutY="352.0" mnemonicParsing="false" text="authorization" />
+      <Button fx:id="btnTestCon" layoutX="14.0" layoutY="352.0" mnemonicParsing="false" text="test connection" />
+      <Button fx:id="btnSendFile" layoutX="362.0" layoutY="352.0" mnemonicParsing="false" text="send file" />
+      <Button fx:id="btnGetList" layoutX="218.0" layoutY="352.0" mnemonicParsing="false" text="get file list" />
+      <TextField fx:id="fieldPath" layoutX="429.0" layoutY="352.0" promptText="path" />
+      <ListView fx:id="listServerFile" layoutX="13.0" layoutY="12.0" prefHeight="267.0" prefWidth="198.0" />
+      <Button fx:id="btnGetFile" layoutX="300.0" layoutY="352.0" mnemonicParsing="false" text="get file" />
+      <TextField fx:id="fieldLog" layoutX="14.0" layoutY="288.0" promptText="log" />
+      <TextField fx:id="fieldPass" layoutX="14.0" layoutY="320.0" promptText="pass" />
+      <TextField fx:id="fieldSFName" layoutX="423.0" layoutY="28.0" promptText="FName" />
+      <TextField fx:id="fieldSLName" layoutX="423.0" layoutY="62.0" promptText="LName" />
+      <TextField fx:id="fieldSUName" layoutX="423.0" layoutY="98.0" promptText="UName" />
+      <TextField fx:id="fieldSGender" layoutX="423.0" layoutY="163.0" promptText="Gender" />
+      <TextField fx:id="fieldSPass" layoutX="423.0" layoutY="131.0" promptText="Pass" />
+      <Button fx:id="btnSignUp" layoutX="423.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="signUp" />
+   </children>
+</AnchorPane>

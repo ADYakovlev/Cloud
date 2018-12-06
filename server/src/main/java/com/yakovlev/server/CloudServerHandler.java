@@ -3,12 +3,10 @@ package com.yakovlev.server;
 import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
 import com.yakovlev.server.DAO.DatabaseHandler;
+import com.yakovlev.server.DAO.DatabaseMethods;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /*
  *@author Yakovlev Alexandr
@@ -24,60 +22,43 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
         try {
             if (msg == null)
                 return;
-            System.out.println(msg.getClass());
             if (msg instanceof MyMessage) {
-                System.out.println("Client text massage: " + ((MyMessage) msg).getUserName());
-
-                MyMessage answer = new MyMessage();
-                answer.setUserName(loginUser(((MyMessage) msg).getUserName(), ((MyMessage) msg).getPassword()));
-                ctx.write(answer);
-                ctx.flush();
-            } else if (msg instanceof MyCommand) {
-                if (((MyCommand) msg).getCommand().equals("getList")){
+                System.out.println("message");
+                if (((MyMessage) msg).getTypeOf().equals("/signup")) {
+                    DatabaseMethods.signUpUser((MyMessage) msg);
                     MyMessage answer = new MyMessage();
-                    answer.setList(CloudCommandHendler.fileList(((MyCommand) msg).getPath()));
+                    answer.setUserName("true");
                     ctx.write(answer);
                     ctx.flush();
                 }
-            }else{
+                if (((MyMessage) msg).getTypeOf().equals("/auth")) {
+                    System.out.println("auth...");
+                    String result = DatabaseMethods.getUser((MyMessage) msg);
+                    System.out.println(result);
+                    MyMessage answer = new MyMessage();
+                    if (result != null) {
+                        answer.setUserName(result);
+                    } else {
+                        answer.setUserName(null);
+                    }
+                    ctx.write(answer);
+                    ctx.flush();
+                }
+            } else if (msg instanceof MyCommand) {
+                System.out.println("command");
+                if (((MyCommand) msg).getCommand().equals("/test")) {
+                    System.out.println(((MyCommand) msg).getPath());
+                    MyMessage answer = new MyMessage();
+                    answer.setUserName("true");
+                    ctx.write(answer);
+                    ctx.flush();
+                }
+            } else {
                 System.out.println("Server received wrong object!");
                 return;
             }
         } finally {
             ReferenceCountUtil.release(msg);
-        }
-    }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        super.channelReadComplete(ctx);
-    }
-
-    private String loginUser(String loginText, String loginPassword) {
-        DatabaseHandler dbHandler = new DatabaseHandler();
-        MyMessage user = new MyMessage();
-        user.setUserName(loginText);
-        user.setPassword(loginPassword);
-        ResultSet result = dbHandler.getUser(user);
-
-        int counter = 0;
-        try {
-            while (result.next()) {
-                counter++;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if (counter >= 1) {
-//            loginSignInBtn.setOnAction(event -> {setScene("/sample/view/app.fxml");});
-            return "Ok";
-
-        } else {
-//            Shake userLoginAnim = new Shake(loginTextField);
-//            Shake userPasswordAnim = new Shake(passwordField);
-//            userLoginAnim.playAnim();
-//            userPasswordAnim.playAnim();
-            return "no";
         }
     }
 }
