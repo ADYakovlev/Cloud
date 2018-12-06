@@ -11,18 +11,10 @@ import java.io.Serializable;
 public class MyCommand implements Serializable {
     private static final long serialVersionUID = 5193392663743561680L;
 
-    @Getter
-    @Setter
-    private String command;
-    @Getter
-    @Setter
-    private String path;
-    @Getter
-    @Setter
-    private String varStr1;
-    @Getter
-    @Setter
-    private String varStr2;
+    @Getter @Setter private String command;
+    @Getter @Setter private String path;
+    @Getter @Setter private String varStr1;
+    @Getter @Setter private String varStr2;
 
     public MyCommand() {
     }

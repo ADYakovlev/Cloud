@@ -2,7 +2,6 @@ package com.yakovlev.server;
 
 import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
-import com.yakovlev.server.DAO.DatabaseHandler;
 import com.yakovlev.server.DAO.DatabaseMethods;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

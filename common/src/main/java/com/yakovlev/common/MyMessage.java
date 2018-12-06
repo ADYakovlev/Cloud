@@ -12,27 +12,13 @@ import java.util.List;
 public class MyMessage implements Serializable {
     private static final long serialVersionUID = 5193392663743561680L;
 
-    @Getter
-    @Setter
-    private String typeOf;
-    @Getter
-    @Setter
-    private String firstName;
-    @Getter
-    @Setter
-    private String lastName;
-    @Getter
-    @Setter
-    private String userName;
-    @Getter
-    @Setter
-    private String password;
-    @Getter
-    @Setter
-    private String gender;
-    @Getter
-    @Setter
-    private List list;
+    @Getter @Setter private String typeOf;
+    @Getter @Setter private String firstName;
+    @Getter @Setter private String lastName;
+    @Getter @Setter private String userName;
+    @Getter @Setter private String password;
+    @Getter @Setter private String gender;
+    @Getter @Setter private List list;
 
     public MyMessage(String firstName, String lastName, String userName, String password, String gender) {
         this.firstName = firstName;
