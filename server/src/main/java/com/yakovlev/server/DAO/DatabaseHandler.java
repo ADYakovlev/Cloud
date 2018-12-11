@@ -44,26 +44,4 @@ public class DatabaseHandler extends Configs {
             e.printStackTrace();
         }
     }
-
-    public ResultSet getUser(MyMessage user) {
-        ResultSet resSet = null;
-        System.out.println("DatabaseHandler in...");
-
-//        String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " + Const.USERS_USERNAME + "=? AND " + Const.USERS_PASSWORD + "=?";
-        String select = "SELECT * FROM users WHERE username = '2018' AND password = 'qwertyu';";
-        try {
-            PreparedStatement prSt = getDbConnection().prepareStatement(select);
-//            prSt.setString(1, user.getUserName());
-//            prSt.setString(2, user.getPassword());
-
-            resSet = prSt.executeQuery();
-            System.out.println(resSet.getString(2));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println("DatabaseHandler out...");
-        return resSet;
-    }
 }

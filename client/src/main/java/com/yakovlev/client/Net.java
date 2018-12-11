@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Net {
 
-    public static void sendObject(Object msg) {
+    public void sendObject(Object msg) {
         ObjectEncoderOutputStream oeos = null;
         ObjectDecoderInputStream odis = null;
         try (java.net.Socket socket = new java.net.Socket("localhost", 8180)) {
@@ -36,7 +36,7 @@ public class Net {
     }
 
 
-    public static void test() {
+    public void test() {
         ObjectEncoderOutputStream oeos = null;
         ObjectDecoderInputStream odis = null;
         try (java.net.Socket socket = new java.net.Socket("localhost", 8180)) {
@@ -46,10 +46,14 @@ public class Net {
             oeos.flush();
             odis = new ObjectDecoderInputStream(socket.getInputStream());
             MyMessage msgFromServer = (MyMessage) odis.readObject();
+            if(((MyMessage) odis.readObject()).getTypeOf()=="/file"){
+               //save object
+            }
             System.out.println("Answer from server: " + msgFromServer.getUserName() + "//.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+
             try {
                 odis.close();
             } catch (IOException e) {

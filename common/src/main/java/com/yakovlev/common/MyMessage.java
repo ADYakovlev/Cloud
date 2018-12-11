@@ -19,6 +19,7 @@ public class MyMessage implements Serializable {
     @Getter @Setter private String password;
     @Getter @Setter private String gender;
     @Getter @Setter private List list;
+    @Getter @Setter private byte[] Byte;
 
     public MyMessage(String firstName, String lastName, String userName, String password, String gender) {
         this.firstName = firstName;

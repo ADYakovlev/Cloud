@@ -23,5 +23,7 @@
       <TextField fx:id="fieldSGender" layoutX="423.0" layoutY="163.0" promptText="Gender" />
       <TextField fx:id="fieldSPass" layoutX="423.0" layoutY="131.0" promptText="Pass" />
       <Button fx:id="btnSignUp" layoutX="423.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="signUp" />
+      <Button fx:id="btnCreateDir" layoutX="218.0" layoutY="12.0" mnemonicParsing="false" text="create dir" />
+      <Button fx:id="btnDownload" layoutX="218.0" layoutY="50.0" mnemonicParsing="false" text="download file" />
    </children>
 </AnchorPane>

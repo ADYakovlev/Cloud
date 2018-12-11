@@ -2,7 +2,6 @@ package com.yakovlev.server;
 
 import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
-import com.yakovlev.server.DAO.DatabaseMethods;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -51,6 +50,10 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
                     answer.setUserName("true");
                     ctx.write(answer);
                     ctx.flush();
+                }
+                if(((MyCommand)msg).getCommand().equals("/download")){
+                    FileWorker fw = new FileWorker(ctx);
+                    fw.sendfile();
                 }
             } else {
                 System.out.println("Server received wrong object!");
