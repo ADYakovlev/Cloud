@@ -2,6 +2,7 @@ package com.yakovlev.server;
 
 import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
+import com.yakovlev.server.DAO.DatabaseHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -23,7 +24,8 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
             if (msg instanceof MyMessage) {
                 System.out.println("message");
                 if (((MyMessage) msg).getTypeOf().equals("/signup")) {
-                    DatabaseMethods.signUpUser((MyMessage) msg);
+
+                    new DatabaseHandler().signUpUser((MyMessage) msg);
                     MyMessage answer = new MyMessage();
                     answer.setUserName("true");
                     ctx.write(answer);
@@ -31,7 +33,7 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
                 }
                 if (((MyMessage) msg).getTypeOf().equals("/auth")) {
                     System.out.println("auth...");
-                    String result = DatabaseMethods.getUser((MyMessage) msg);
+                    String result = new DatabaseHandler().getUser(((MyMessage) msg).getUserName(),((MyMessage) msg).getPassword());
                     System.out.println(result);
                     MyMessage answer = new MyMessage();
                     if (result != null) {

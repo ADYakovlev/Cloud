@@ -44,4 +44,9 @@ public class DatabaseHandler extends Configs {
             e.printStackTrace();
         }
     }
+
+    public String getUser(String login, String password) throws SQLException, ClassNotFoundException {
+
+        return "firstname";
+    }
 }

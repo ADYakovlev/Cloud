@@ -12,7 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class TestScreenController {
@@ -68,10 +71,17 @@ public class TestScreenController {
     private Button btnSignUp;
 
     @FXML
+    private Button btnDownload;
+
+    @FXML
+    private Button btnCreateDir;
+
+    @FXML
     void initialize() {
 
         btnTestCon.setOnAction(event -> {
-            new Thread(()->{Net.test();}).start();
+            new Thread(()->{ Net net = new Net();
+                net.test();}).start();
         });
         btnAuth.setOnAction(event -> {
             MyCommand command = new MyCommand();
@@ -79,7 +89,8 @@ public class TestScreenController {
             command.setVarStr2(fieldPass.getText().trim());
 
             command.setCommand("/auth");
-            new Thread(()->{Net.sendObject(command);}).start();
+            new Thread(()->{ Net net = new Net();
+                net.sendObject(command);}).start();
         });
 
         btnSignUp.setOnAction(event -> {
@@ -91,7 +102,8 @@ public class TestScreenController {
             myMessage.setGender(fieldSGender.getText().trim());
 
             myMessage.setTypeOf("/signup");
-            new Thread(()->{Net.sendObject(myMessage);}).start();
+            new Thread(()->{ Net net = new Net();
+                net.sendObject(myMessage);}).start();
 
         });
         btnAuth.setOnAction(event -> {
@@ -100,7 +112,24 @@ public class TestScreenController {
             myMessage.setPassword(fieldLog.getText().trim());
 
             myMessage.setTypeOf("/auth");
-            new Thread(()->{Net.sendObject(myMessage);}).start();
+            new Thread(()->{ Net net = new Net();
+                net.sendObject(myMessage);}).start();
+        });
+
+        btnCreateDir.setOnAction(event -> {
+            try {
+                Files.createDirectory(Paths.get("3"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnDownload.setOnAction(event -> {
+            MyCommand myCommand = new MyCommand();
+            myCommand.setCommand("/download");
+            new Thread(()->{
+                Net net = new Net();
+                net.sendObject(myCommand);}).start();
         });
 
     }
