@@ -4,7 +4,6 @@ package com.yakovlev.client.controllers;
  *@author Yakovlev Alexandr
  */
 
-import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
@@ -48,13 +47,14 @@ public class WorkScreenController {
     void initialize() {
         btnGetList.setOnAction(event -> {
             MyMessage answer = sendCommand("getList", "./");
-            ArrayList<String> arr = (ArrayList<String>) answer.getList();
+            ArrayList<String> arr = (ArrayList<String>) answer.getPathList();
             for (int i = 0; i < arr.size(); i++) {
                 list.getItems().addAll(arr.get(i));
             }
         });
 
-        btnUp.setOnAction(event -> { });
+        btnUp.setOnAction(event -> {
+        });
     }
 
     private MyMessage sendCommand(String command, String path) {
@@ -63,15 +63,14 @@ public class WorkScreenController {
         MyMessage msgFromServer;
         try (Socket socket = new Socket("localhost", 8180)) {
             oeos = new ObjectEncoderOutputStream(socket.getOutputStream());
-            MyCommand myCommand = new MyCommand(command, path);
-//            MyMessage loginMessage = new MyMessage();
-//            loginMessage.setUserName(fieldMail.getText().trim());
-//            loginMessage.setPassword(fieldPassword.getText().trim());
-            oeos.writeObject(myCommand);
+            MyMessage myMessage = new MyMessage();
+            myMessage.setTypeOf(command);
+            myMessage.setUserName(path);
+            oeos.writeObject(myMessage);
             oeos.flush();
             odis = new ObjectDecoderInputStream(socket.getInputStream());
             msgFromServer = (MyMessage) odis.readObject();
-            System.out.println("Answer from server: " + msgFromServer.getList()+"//.");
+            System.out.println("Answer from server: " + msgFromServer.getPathList() + "//.");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

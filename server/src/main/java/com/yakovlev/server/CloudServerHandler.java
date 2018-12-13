@@ -1,6 +1,5 @@
 package com.yakovlev.server;
 
-import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
 import com.yakovlev.server.DAO.DatabaseHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,9 +21,15 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
             if (msg == null)
                 return;
             if (msg instanceof MyMessage) {
-                System.out.println("message");
+                if (((MyMessage) msg).getTypeOf().equals("/download")) {
+                    FileWorker fw = new FileWorker(ctx);
+                    fw.sendfile();
+                }
+                if (((MyMessage) msg).getTypeOf().equals("/getfilelist")) {
+                    FileWorker fw = new FileWorker(ctx);
+                    fw.sendFileList();
+                }
                 if (((MyMessage) msg).getTypeOf().equals("/signup")) {
-
                     new DatabaseHandler().signUpUser((MyMessage) msg);
                     MyMessage answer = new MyMessage();
                     answer.setUserName("true");
@@ -32,8 +37,7 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
                     ctx.flush();
                 }
                 if (((MyMessage) msg).getTypeOf().equals("/auth")) {
-                    System.out.println("auth...");
-                    String result = new DatabaseHandler().getUser(((MyMessage) msg).getUserName(),((MyMessage) msg).getPassword());
+                    String result = new DatabaseHandler().getUser(((MyMessage) msg).getUserName(), ((MyMessage) msg).getPassword());
                     System.out.println(result);
                     MyMessage answer = new MyMessage();
                     if (result != null) {
@@ -43,19 +47,6 @@ public class CloudServerHandler extends ChannelInboundHandlerAdapter {
                     }
                     ctx.write(answer);
                     ctx.flush();
-                }
-            } else if (msg instanceof MyCommand) {
-                System.out.println("command");
-                if (((MyCommand) msg).getCommand().equals("/test")) {
-                    System.out.println(((MyCommand) msg).getPath());
-                    MyMessage answer = new MyMessage();
-                    answer.setUserName("true");
-                    ctx.write(answer);
-                    ctx.flush();
-                }
-                if(((MyCommand)msg).getCommand().equals("/download")){
-                    FileWorker fw = new FileWorker(ctx);
-                    fw.sendfile();
                 }
             } else {
                 System.out.println("Server received wrong object!");

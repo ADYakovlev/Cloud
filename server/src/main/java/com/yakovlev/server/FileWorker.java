@@ -4,10 +4,12 @@ import com.yakovlev.common.MyMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  *@author Yakovlev Alexandr
@@ -20,26 +22,25 @@ public class FileWorker {
     }
 
     public static void main(String[] args) throws IOException {
-        //работа с путями
-        Path path = Paths.get("a.txt");
-
-//        System.out.println("path: " + path);
-//        System.out.println("path.getFileName(): " + path.getFileName());
-//        System.out.println("path.normalize(): " + path.normalize());
-//        System.out.println("path.getCountName(): "+path.getNameCount());
-//        System.out.println("path.getname(3): " + path.getName(0));
-//        System.out.println(path.getRoot());
-
-        //работа с файлами
         try {
-            Files.copy(Paths.get("2/a.txt"),Paths.get("1/a.txt"), StandardCopyOption.REPLACE_EXISTING);
-            Files.move(Paths.get("2/a.txt"),Paths.get("2/c.txt"));
+            Files.copy(Paths.get("2/a.txt"), Paths.get("1/a.txt"), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(Paths.get("2/a.txt"), Paths.get("2/c.txt"));
             Files.delete(Paths.get("2/a.txt"));
+            List<String> stringList = Files.lines(Paths.get("2/a.txt"), StandardCharsets.UTF_8).collect(Collectors.toList());
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void sendFileList() throws IOException {
+        MyMessage ms = new MyMessage();
+        List pathList = Files.list(Paths.get("3")).collect(Collectors.toList());
+        ms.setTypeOf("/list");
+//        ms.setPathList(pathList);
+        ctx.write(ms);
+        ctx.flush();
     }
 
     public void sendfile() throws IOException {
@@ -49,5 +50,4 @@ public class FileWorker {
         ctx.write(ms);
         ctx.flush();
     }
-
 }

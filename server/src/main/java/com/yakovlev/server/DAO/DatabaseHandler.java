@@ -22,7 +22,7 @@ public class DatabaseHandler extends Configs {
 
     public void signUpUser(MyMessage user) {
         String insert = "INSERT INTO " + Const.USER_TABLE + "(" +
-                Const.USERS_FRISTNAME + "," +
+                Const.USERS_FIRSTNAME + "," +
                 Const.USERS_LASTNAME + "," +
                 Const.USERS_USERNAME + "," +
                 Const.USERS_PASSWORD + "," +

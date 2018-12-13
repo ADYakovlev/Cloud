@@ -5,7 +5,6 @@ package com.yakovlev.client.controllers;
  */
 
 import com.yakovlev.client.Net;
-import com.yakovlev.common.MyCommand;
 import com.yakovlev.common.MyMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +15,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TestScreenController {
@@ -25,6 +26,9 @@ public class TestScreenController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private TextField fieldWorkDir;
 
     @FXML
     private Button btnGetList;
@@ -77,20 +81,31 @@ public class TestScreenController {
     private Button btnCreateDir;
 
     @FXML
+    private TextField fieldSaveAs;
+
+    @FXML
     void initialize() {
 
         btnTestCon.setOnAction(event -> {
-            new Thread(()->{ Net net = new Net();
-                net.test();}).start();
+            MyMessage myMessage = new MyMessage();
+            myMessage.setTypeOf("/test");
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+            }).start();
         });
         btnAuth.setOnAction(event -> {
-            MyCommand command = new MyCommand();
-            command.setVarStr1(fieldLog.getText().trim());
-            command.setVarStr2(fieldPass.getText().trim());
+            MyMessage myMessage = new MyMessage();
+            myMessage.setUserName(fieldLog.getText().trim());
+            myMessage.setPassword(fieldPass.getText().trim());
 
-            command.setCommand("/auth");
-            new Thread(()->{ Net net = new Net();
-                net.sendObject(command);}).start();
+            myMessage.setTypeOf("/auth");
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+            }).start();
         });
 
         btnSignUp.setOnAction(event -> {
@@ -102,8 +117,11 @@ public class TestScreenController {
             myMessage.setGender(fieldSGender.getText().trim());
 
             myMessage.setTypeOf("/signup");
-            new Thread(()->{ Net net = new Net();
-                net.sendObject(myMessage);}).start();
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+            }).start();
 
         });
         btnAuth.setOnAction(event -> {
@@ -112,24 +130,52 @@ public class TestScreenController {
             myMessage.setPassword(fieldLog.getText().trim());
 
             myMessage.setTypeOf("/auth");
-            new Thread(()->{ Net net = new Net();
-                net.sendObject(myMessage);}).start();
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+            }).start();
         });
 
         btnCreateDir.setOnAction(event -> {
-            try {
-                Files.createDirectory(Paths.get("3"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            MyMessage myMessage = new MyMessage();
+            myMessage.setTypeOf("/getfilelist");
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+                List pathList = net.getAnswerMessage().getPathList();
+                for (Object s : pathList) {
+                    System.out.println(" - " + (String) s);
+                }
+            }).start();
         });
 
         btnDownload.setOnAction(event -> {
-            MyCommand myCommand = new MyCommand();
-            myCommand.setCommand("/download");
-            new Thread(()->{
+            MyMessage myMessage = new MyMessage();
+            myMessage.setTypeOf("/download");
+
+            new Thread(() -> {
                 Net net = new Net();
-                net.sendObject(myCommand);}).start();
+                net.messageExchange(myMessage);
+                System.out.println(net.getAnswerMessage().getTypeOf());
+                byte[] data = net.getAnswerMessage().getByte();
+                try {
+                    Files.write(Paths.get(fieldWorkDir.getText().trim() + "/" + fieldSaveAs.getText().trim()), data, StandardOpenOption.CREATE_NEW);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        });
+
+        btnGetList.setOnAction(event -> {
+            MyMessage myMessage = new MyMessage();
+            myMessage.setTypeOf("/getfilelist");
+
+            new Thread(() -> {
+                Net net = new Net();
+                net.messageExchange(myMessage);
+            }).start();
         });
 
     }
